@@ -30,7 +30,9 @@ if (Meteor.isClient) {
       // Insert a task into the collection
       Tasks.insert({
         text: text,
-        createdAt: new Date()
+        createdAt: new Date(),
+        owner: Meteor.userId(),
+        username: Meteor.user().username
       });
 
       //Clear form
@@ -41,7 +43,7 @@ if (Meteor.isClient) {
     }
   });
 
-  Template.tasks.events({
+  Template.task.events({
     "click .toggle-checked": function() {
       // Set the checked property to the opposite of its current value
       Tasks.update(this._id, {
@@ -51,6 +53,10 @@ if (Meteor.isClient) {
     "click .delete": function() {
       Tasks.remove(this._id);
     }
+  });
+
+  Accounts.ui.config({
+    passwordsSignupFields: "USERNAME_ONLY"
   });
 }
 
